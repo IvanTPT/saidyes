@@ -1,10 +1,8 @@
 hero:
-  tagline: "Бенчање"
+  tagline: "Венчање"
   title: "рекла је да!"
   description: >
-    An editorial soirée in the heart of the city — bold florals, late-night vinyl,
-    and a guest list filled with our favorite people. Come for the vows, stay for
-    the midnight espresso martinis.
+    Миљан и Анђела вас са радошћу позивају да заједно прославимо почетак њиховог заједничког живота.
   weekday: "Недеља"
   dateDisplay: "09 · 08 · 2026"
   location: "Крагујевац • Event Centar vila Rajčić"
@@ -25,20 +23,20 @@ schedule:
   eyebrow: "Наша прослава"
   title: "Распоред догађаја на дан венчања"
   description: >
-    Follow along to savor every cherished moment with us—from vows to the last sparkling toast.
+    Пратите нас да бисте уживали у сваком драгоценом тренутку са нама - од црквеног венчања до торте.
   events:
     - number: "01"
-      label: "Ceremony"
-      title: "Ceremony & Vows"
+      label: "Црквено венчање"
+      title: "Венчање у манастиру Драча "
       description: >
-        Gather on the chapel lawn for an intimate ceremony beneath the olive trees. Ushers are ready to guide you to your seat.
+        венчање у складу са традиционалним православним обичајима у манастору Драча у Крагујевцу
       details:
-        - "Prelude music begins at 3:40 PM"
-        - "Rings & vows at golden hour"
-        - "Quiet shuttle service begins at 3:15 PM"
+        - "окуплњање у порти манастира"
+        - "Свети обред црквеног венчања"
+        - "заједничка фотографија испред храма"
     - number: "02"
-      label: "Welcome"
-      title: "Garden Cocktail Hour"
+      label: "Добро дошли"
+      title: "Окупљање гостију у Вили Рајчић"
       description: >
         Sip seasonal cocktails, enjoy live jazz, and mingle beneath the café lights as we transition into the celebration.
       details:
@@ -46,8 +44,8 @@ schedule:
         - "String trio taking requests"
         - "Canapés served throughout the garden"
     - number: "03"
-      label: "Dinner"
-      title: "Candlelit Reception"
+      label: "Весеље"
+      title: "Журка, журка!"
       description: >
         Savor a farm-to-table feast paired with curated wines while heartfelt toasts and stories fill the room.
       details:
@@ -55,8 +53,8 @@ schedule:
         - "Toasts begin after the second course"
         - "Dessert trio plated at 8:10 PM"
     - number: "04"
-      label: "Celebration"
-      title: "First Dance & Party"
+      label: "Торта"
+      title: "Младеначка торта"
       description: >
         Kick off the dance floor with our first dance, then stay on your feet for live DJ sets, photo moments, and late-night bites.
       details:
@@ -74,10 +72,10 @@ schedule:
         - "Last shuttle leaves at 12:30 AM"
 
 gallery:
-  eyebrow: "Gallery"
-  title: "Scroll through the memories"
+  eyebrow: "Галерија"
+  title: "Заједничке успомене"
   description: >
-    A curated strip of the moments we never want to forget—from the first look to the final sparkler.
+    Инспирација за ваше слике које можете поделити са нама.
   images:
     - asset: "wedshots/jakob-owens-unsplash.jpg"
       alt: "First look on the veranda"
@@ -95,9 +93,9 @@ gallery:
       alt: "Sparkler send-off moment"
 
 cards:
-  - imageAlt: "RSVP"
-    title: "RSVP"
-    description: "Let us know if you’ll be joining our special day!"
+  - imageAlt: "Потврдите ваш долазак"
+    title: "Потврдите ваш долазак"
+    description: "молимо вас да потврдите ваш долазак до краја јуна 2026!"
     href: "/rsvp"
   - imageAlt: "Wishlist"
     title: "Wishlist"
@@ -109,5 +107,5 @@ countdown:
   heading: 'Countdown to "We Do"'
   message: >
     Every sunrise brings us closer to the moment we gather together. Save the date and get ready for an unforgettable celebration.
-  target: "2026-06-21T21:00:00Z"
-  location: "Mexico City • La Casa Azul"
+  target: "2026-08-09T12:00:00Z"
+  location: "Крагујевац • Event Centar vila Rajčić"
