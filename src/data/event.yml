@@ -62,8 +62,8 @@ schedule:
         - "Dessert lounge opens at 9:30 PM"
         - "Photo booth until 11:30 PM"
     - number: "05"
-      label: "Farewell"
-      title: "Sparkler Send-Off"
+      label: "Најлуђи провод до зоре"
+      title: "Прослава траје док гости не оду ;)"
       description: >
         Close the night with a sparkling farewell and a final toast to forever. Shuttles depart every 20 minutes.
       details:
@@ -97,15 +97,15 @@ cards:
     title: "Потврдите ваш долазак"
     description: "молимо вас да потврдите ваш долазак до краја јуна 2026!"
     href: "/rsvp"
-  - imageAlt: "Wishlist"
-    title: "Wishlist"
-    description: "See our gift wishlist and help us start our new chapter."
-    href: "/wishlist"
+  - imageAlt: "Додајте ваше слике"
+    title: "Поделите слике са нама"
+    description: "Заједничке успомене дуже трају, подлите слоке и видео снимке које сте направили вашим телефоном."
+    href: "/upload"
 
 countdown:
-  label: "Wedding Weekend Countdown"
-  heading: 'Countdown to "We Do"'
+  label: "Одбојавање до прославе"
+  heading: 'Сат откуцава док млада не каже "Да"'
   message: >
-    Every sunrise brings us closer to the moment we gather together. Save the date and get ready for an unforgettable celebration.
+  Надамо се лепом времену и прегршт успомена нашег посебног дана. 
   target: "2026-08-09T12:00:00Z"
   location: "Крагујевац • Event Centar vila Rajčić"
