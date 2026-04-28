@@ -95,9 +95,9 @@ gallery:
 cards:
   - imageAlt: "Потврдите ваш долазак"
     title: "Потврдите ваш долазак"
-    description: "молимо вас да потврдите ваш долазак до краја јуна 2026!"
+    description: "молимо вас да потврдите ваш долазак до краја јуна 2026! Радујемо се вашем доласку!"
     href: "/rsvp" 
-  - imageAsset: "wedshots/vadim-paripa-unsplash.jpg"
+  - image: "wedshots/vadim-paripa-unsplash.jpg"
     imageAlt: "Додајте ваше слике"
     title: "Поделите слике са нама"
     description: "Заједничке успомене дуже трају, подлите слоке и видео снимке које сте направили вашим телефоном."
