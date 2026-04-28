@@ -35,6 +35,7 @@ export interface ScheduleContent {
 }
 
 export interface CardContent {
+  image?: string;
   imageAlt?: string;
   title: string;
   description?: string;
