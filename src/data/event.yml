@@ -100,7 +100,7 @@ cards:
   - imageAlt: "Додајте ваше слике"
     title: "Поделите слике са нама"
     description: "Заједничке успомене дуже трају, подлите слоке и видео снимке које сте направили вашим телефоном."
-    href: "/upload"
+    href: "https://photos.app.goo.gl/c2U4wgFD8ifWJXMy9"
 
 countdown:
   label: "Одбојавање до прославе"
