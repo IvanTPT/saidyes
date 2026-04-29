@@ -1,6 +1,11 @@
 ---
+// 1. Import the Image component and the type for TypeScript
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 export interface Props {
-    image?: string;
+    // 2. Update the type to accept Astro's optimized image object (or a string if you ever use external URLs)
+    image?: ImageMetadata | string | any; 
     imageAlt?: string;
     title: string;
     subtitle?: string;
@@ -25,7 +30,8 @@ const {
 
     {
         image && (
-            <img
+            /* 3. Replace standard <img> with Astro's <Image /> */
+            <Image
                 src={image}
                 alt={imageAlt}
                 class="card__avatar mb-5 h-28 w-28 rounded-full object-cover"
