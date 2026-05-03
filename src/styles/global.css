@@ -1,5 +1,6 @@
 @import "@fontsource-variable/inter/index.css";
-/* Увоз Great Vibes фонта са Google Fonts */
+@import "@fontsource/playfair-display/latin.css";
+/* Увоз Great Vibes фонта са Google Fonts за наслове */
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import "tailwindcss";
 
@@ -7,7 +8,9 @@
     --font-sans:
         "Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", sans-serif;
-    /* Промењено на Great Vibes */
+    /* Чувамо Playfair Display ако ти затреба за друге елементе */
+    --font-serif: "Playfair Display", serif; 
+    /* Постављамо Great Vibes за наслове */
     --font-display: "Great Vibes", cursive; 
     --section-padding: clamp(2rem, 7vw, 6rem);
     --section-max-width: 1000px;
@@ -38,7 +41,8 @@
     body {
         font-family: var(--font-sans);
         background-color: var(--color-background);
-        color: var(--color-text-dark); /* Мала исправка: користио си --color-text који није дефинисан у :root, ставио сам --color-text-dark */
+        /* Користимо дефинисану тамну боју за текст да би био читљив */
+        color: var(--color-text-dark); 
     }
 
     h1,
@@ -48,7 +52,7 @@
     h5,
     h6 {
         font-family: var(--font-display);
-        font-weight: normal; /* Great Vibes изгледа најбоље када није подебљан */
+        font-weight: 400; /* Great Vibes је најлепши на нормалној дебљини */
     }
 }
 
