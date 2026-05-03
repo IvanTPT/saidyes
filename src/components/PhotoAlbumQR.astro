@@ -1,0 +1,102 @@
+---
+// src/components/PhotoAlbumQR.astro
+
+// ОВДЕ УБАЦУЈЕШ ЛИНК ДО ТВОГ ДЕЉЕНОГ GOOGLE PHOTOS АЛБУМА
+// Важно: Увери се да је албум подешен тако да свако са линком може да додаје фотографије!
+const albumUrl = "https://photos.app.goo.gl/ТВОЈ_ЛИНК_АЛБУМА"; 
+
+// Користимо бесплатан сервис за генерисање QR кода
+const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(albumUrl)}`;
+---
+
+<div class="qr-wrapper">
+  <!-- Овај наслов ће аутоматски повући 'Great Vibes' фонт из твог global.css -->
+  <h2>Поделите своје фотографије</h2>
+  
+  <p>Драги гости, помозите нам да сачувамо сваки тренутак! Скенирајте QR код својим телефоном и додајте слике и снимке у наш заједнички албум.</p>
+  
+  <div class="qr-code-container">
+    <!-- QR код слика -->
+    <img src={qrCodeUrl} alt="QR код за Google Photos албум" width="250" height="250" loading="lazy" />
+  </div>
+
+  <div class="link-container">
+    <span class="or-text">или</span>
+    <br/>
+    <a href={albumUrl} target="_blank" rel="noopener noreferrer" class="link-btn">
+      Кликните овде за приступ албуму
+    </a>
+  </div>
+</div>
+
+<style>
+  .qr-wrapper {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 3rem 2rem;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    font-family: system-ui, sans-serif;
+    border: 1px solid #e5e7eb;
+  }
+
+  p {
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+  }
+
+  .qr-code-container {
+    display: inline-block;
+    padding: 1rem;
+    background: #ffffff;
+    border: 2px dashed #d1d5db; /* Испрекидана линија око кода за лепши ефекат */
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease;
+  }
+
+  .qr-code-container:hover {
+    transform: scale(1.02); /* Благо се повећа када се пређе мишем */
+  }
+
+  .qr-code-container img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .link-container {
+    margin-top: 1rem;
+  }
+
+  .or-text {
+    color: #9ca3af;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .link-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #f3f4f6;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 1px solid #d1d5db;
+  }
+
+  .link-btn:hover {
+    background-color: #e5e7eb;
+    color: #111827;
+    border-color: #9ca3af;
+  }
+</style>
