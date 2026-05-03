@@ -1,23 +1,19 @@
 ---
 // src/components/PhotoAlbumQR.astro
-
-// ОВДЕ УБАЦУЈЕШ ЛИНК ДО ТВОГ ДЕЉЕНОГ GOOGLE PHOTOS АЛБУМА
-// Важно: Увери се да је албум подешен тако да свако са линком може да додаје фотографије!
 const albumUrl = "https://photos.app.goo.gl/c2U4wgFD8ifWJXMy9"; 
-
-// Користимо бесплатан сервис за генерисање QR кода
-const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(albumUrl)}`;
+const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(albumUrl)}&color=434a42&bgcolor=d6ccc2`;
+// Напомена: додао сам &color=434a42 (primary боја) и &bgcolor=d6ccc2 (background боја) у QR API 
+// како би и сам QR код изгледао као део сајта!
 ---
 
-<div class="qr-wrapper">
-  <!-- Овај наслов ће аутоматски повући 'Great Vibes' фонт из твог global.css -->
-  <h2>Поделите своје фотографије</h2>
+<!-- Додали смо 'card' класу -->
+<div class="card qr-container">
+  <h2>Поделите фотографије</h2>
   
   <p>Драги гости, помозите нам да сачувамо сваки тренутак! Скенирајте QR код својим телефоном и додајте слике и снимке у наш заједнички албум.</p>
   
-  <div class="qr-code-container">
-    <!-- QR код слика -->
-    <img src={qrCodeUrl} alt="QR код за Google Photos албум" width="250" height="250" loading="lazy" />
+  <div class="qr-code-wrapper">
+    <img src={qrCodeUrl} alt="QR код за Google Photos албум" width="220" height="220" loading="lazy" />
   </div>
 
   <div class="link-container">
@@ -30,73 +26,73 @@ const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data
 </div>
 
 <style>
-  .qr-wrapper {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 3rem 2rem;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  .qr-container {
+    width: 100%;
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
     text-align: center;
-    font-family: system-ui, sans-serif;
-    border: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h2 {
+    color: var(--color-text-dark);
+    margin-bottom: 1.5rem;
   }
 
   p {
-    color: #4b5563;
+    color: color-mix(in srgb, var(--color-primary) 80%, transparent 20%);
     line-height: 1.6;
     margin-bottom: 2rem;
     font-size: 1.05rem;
   }
 
-  .qr-code-container {
+  .qr-code-wrapper {
     display: inline-block;
     padding: 1rem;
-    background: #ffffff;
-    border: 2px dashed #d1d5db; /* Испрекидана линија око кода за лепши ефекат */
-    border-radius: 12px;
+    background: var(--color-background);
+    border: 2px solid color-mix(in srgb, var(--color-accent), transparent 50%);
+    border-radius: 1rem;
     margin-bottom: 1.5rem;
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
   }
 
-  .qr-code-container:hover {
-    transform: scale(1.02); /* Благо се повећа када се пређе мишем */
+  .qr-code-wrapper:hover {
+    transform: scale(1.03);
   }
 
-  .qr-code-container img {
+  .qr-code-wrapper img {
     display: block;
-    max-width: 100%;
-    height: auto;
+    border-radius: 0.5rem;
   }
 
-  .link-container {
-    margin-top: 1rem;
-  }
+  .link-container { margin-top: 0.5rem; }
 
   .or-text {
-    color: #9ca3af;
+    color: var(--color-primary);
     font-size: 0.9rem;
     font-style: italic;
-    margin-bottom: 1rem;
-    display: inline-block;
+    opacity: 0.7;
   }
 
   .link-btn {
     display: inline-block;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     padding: 0.75rem 1.5rem;
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: transparent;
+    color: var(--color-accent);
     text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.2s;
-    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-accent);
   }
 
   .link-btn:hover {
-    background-color: #e5e7eb;
-    color: #111827;
-    border-color: #9ca3af;
+    background-color: var(--color-accent);
+    color: var(--color-background);
   }
 </style>
