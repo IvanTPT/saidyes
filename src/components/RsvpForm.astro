@@ -5,20 +5,18 @@
 <div class="rsvp-wrapper">
   <h2>Potvrda dolaska</h2>
   <form id="rsvp-form" class="rsvp-form">
-    <!-- Podaci glavnog gosta -->
     <fieldset>
       <legend>Vaši podaci</legend>
       <div class="input-group">
         <label for="firstName">Ime</label>
-        <input type="text" id="firstName" name="firstName" required placeholder="Unesite ime" />
+        <input type="text" id="firstName" name="firstName" required placeholder="Unesite vaše ime" />
       </div>
       <div class="input-group">
         <label for="lastName">Prezime</label>
-        <input type="text" id="lastName" name="lastName" required placeholder="Unesite prezime" />
+        <input type="text" id="lastName" name="lastName" required placeholder="Unesite vaše prezime" />
       </div>
     </fieldset>
 
-    <!-- Sekcija za dodatne goste -->
     <fieldset>
       <legend>Osobe koje dolaze sa vama</legend>
       <div id="guests-container"></div>
@@ -27,35 +25,38 @@
       </button>
     </fieldset>
 
-    <button type="submit" class="primary-btn">Potvrdi dolazak</button>
+    <button type="submit" id="submit-btn" class="primary-btn">Potvrdi dolazak</button>
+    <p id="form-message" style="display: none; text-align: center; margin-top: 1rem;"></p>
   </form>
 </div>
 
 <script>
-  // Klijentski JavaScript za dinamičko dodavanje polja
   const addGuestBtn = document.getElementById('add-guest-btn');
   const guestsContainer = document.getElementById('guests-container');
   const rsvpForm = document.getElementById('rsvp-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const formMessage = document.getElementById('form-message');
 
   let guestCount = 0;
 
-  // Funkcija za dodavanje novog gosta
+  // 1. Logika za dodavanje LEPŠIH polja
   addGuestBtn?.addEventListener('click', () => {
     guestCount++;
     
     const guestDiv = document.createElement('div');
-    guestDiv.className = 'guest-row';
+    guestDiv.className = 'guest-row'; // Ovu klasu sada stilizujemo globalno
     guestDiv.innerHTML = `
-      <div class="input-group">
-        <input type="text" name="guestFirstName[]" placeholder="Ime ${guestCount}" required />
+      <div class="guest-input-group">
+        <label>Ime pratioca ${guestCount}</label>
+        <input type="text" name="guestFirstName[]" placeholder="Unesite ime" required class="guest-input" />
       </div>
-      <div class="input-group">
-        <input type="text" name="guestLastName[]" placeholder="Prezime ${guestCount}" required />
+      <div class="guest-input-group">
+        <label>Prezime pratioca ${guestCount}</label>
+        <input type="text" name="guestLastName[]" placeholder="Unesite prezime" required class="guest-input" />
       </div>
-      <button type="button" class="remove-btn">✖</button>
+      <button type="button" class="remove-btn" title="Ukloni osobu">✖</button>
     `;
 
-    // Funkcionalnost za brisanje određenog gosta
     guestDiv.querySelector('.remove-btn')?.addEventListener('click', () => {
       guestDiv.remove();
     });
@@ -63,41 +64,55 @@
     guestsContainer?.appendChild(guestDiv);
   });
 
-  // Obrada slanja forme
-  rsvpForm?.addEventListener('submit', (e) => {
+  // 2. Logika za slanje u Google Sheets
+  rsvpForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Prikupljanje svih podataka iz forme
+    if(submitBtn) submitBtn.textContent = 'Šaljem...';
+    
     const formData = new FormData(rsvpForm as HTMLFormElement);
-    const data = {
-      glavniGost: {
-        ime: formData.get('firstName'),
-        prezime: formData.get('lastName'),
-      },
-      pratioci: [] as { ime: string; prezime: string }[]
-    };
-
-    // Ekstrakcija podataka o dodatnim gostima (nizovi)
     const guestFirstNames = formData.getAll('guestFirstName[]');
     const guestLastNames = formData.getAll('guestLastName[]');
 
+    let pratioci = [];
     for (let i = 0; i < guestFirstNames.length; i++) {
-      data.pratioci.push({
-        ime: guestFirstNames[i].toString(),
-        prezime: guestLastNames[i].toString(),
-      });
+      pratioci.push(`${guestFirstNames[i]} ${guestLastNames[i]}`);
     }
 
-    // Ovde možeš poslati 'data' na neki API (npr. Astro API endpoint ili backend)
-    console.log('Prikupljeni podaci:', data);
-    alert('Hvala! Vaš dolazak je uspešno potvrđen.');
-    (rsvpForm as HTMLFormElement).reset();
-    if(guestsContainer) guestsContainer.innerHTML = ''; // Očisti listu gostiju
+    // Podaci koje šaljemo Skripti
+    const data = {
+      ime: formData.get('firstName'),
+      prezime: formData.get('lastName'),
+      pratioci: pratioci.join(', ') // Spajamo pratioce u jedan tekst zarezom
+    };
+
+    try {
+      // OVDE UBACUJEŠ SVOJ GOOGLE WEB APP URL (iz Koraka 2 ispod)
+      const GOOGLE_SCRIPT_URL = 'ZAMENI_OVDE_SA_TVOJIM_URL_LINKOM'; 
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        // Šaljemo kao text/plain da bismo izbegli CORS greške iz browsera
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+      });
+
+      // Prikaz uspeha
+      rsvpForm.style.display = 'none';
+      if(formMessage) {
+        formMessage.style.display = 'block';
+        formMessage.style.color = 'green';
+        formMessage.textContent = 'Hvala! Vaš dolazak je uspešno potvrđen.';
+      }
+    } catch (error) {
+      alert('Došlo je do greške prilikom slanja. Pokušajte ponovo.');
+      if(submitBtn) submitBtn.textContent = 'Potvrdi dolazak';
+    }
   });
 </script>
 
 <style>
-  /* Osnovno stilizovanje forme (Astro automatski izoluje CSS za ovu komponentu) */
+  /* Lokalni stilovi za fiksne elemente */
   .rsvp-wrapper {
     max-width: 500px;
     margin: 0 auto;
@@ -107,92 +122,63 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-family: system-ui, sans-serif;
   }
+  fieldset { border: none; padding: 0; margin: 0 0 1.5rem 0; }
+  legend { font-weight: bold; margin-bottom: 1rem; color: #333; font-size: 1.1rem; }
+  .input-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+  .input-group label { margin-bottom: 0.5rem; font-size: 0.9rem; color: #555; }
+  input { padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+  
+  button { cursor: pointer; font-weight: bold; border: none; border-radius: 4px; transition: background 0.2s; }
+  .primary-btn { width: 100%; padding: 1rem; background-color: #2563eb; color: white; font-size: 1.1rem; }
+  .primary-btn:hover { background-color: #1d4ed8; }
+  .secondary-btn { padding: 0.5rem 1rem; background-color: #e5e7eb; color: #374151; }
+  .secondary-btn:hover { background-color: #d1d5db; }
+</style>
 
-  fieldset {
-    border: none;
-    padding: 0;
-    margin: 0 0 1.5rem 0;
-  }
-
-  legend {
-    font-weight: bold;
-    margin-bottom: 1rem;
-    color: #333;
-    font-size: 1.1rem;
-  }
-
-  .input-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
-
-  .input-group label {
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #555;
-  }
-
-  input {
-    padding: 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-
+<style is:global>
+  /* GLOBALNI stilovi za elemente koje ubacujemo preko JavaScripta (Gosti) */
   .guest-row {
     display: flex;
     gap: 1rem;
-    align-items: center;
+    align-items: flex-end; /* Poravnava dugme sa dnom inputa */
     margin-bottom: 1rem;
-    background: #fff;
+    background: #ffffff;
     padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+  }
+
+  .guest-input-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Da polja zauzmu jednaku širinu */
+  }
+
+  .guest-input-group label {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4b5563;
+  }
+
+  .guest-input {
+    padding: 0.75rem;
+    border: 1px solid #9ca3af;
     border-radius: 4px;
-    border: 1px dashed #ccc;
-  }
-
-  .guest-row .input-group {
-    margin-bottom: 0;
-    flex: 1;
-  }
-
-  button {
-    cursor: pointer;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
-
-  .primary-btn {
+    font-size: 1rem;
     width: 100%;
-    padding: 1rem;
-    background-color: #2563eb;
-    color: white;
-    font-size: 1.1rem;
-  }
-
-  .primary-btn:hover {
-    background-color: #1d4ed8;
-  }
-
-  .secondary-btn {
-    padding: 0.5rem 1rem;
-    background-color: #e5e7eb;
-    color: #374151;
-  }
-
-  .secondary-btn:hover {
-    background-color: #d1d5db;
+    box-sizing: border-box;
   }
 
   .remove-btn {
     background-color: #ef4444;
     color: white;
-    padding: 0.5rem;
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 42px; /* Da bude iste visine kao input polje */
   }
 
   .remove-btn:hover {
