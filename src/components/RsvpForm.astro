@@ -3,31 +3,39 @@
 ---
 
 <div class="rsvp-wrapper">
-  <h2>Potvrda dolaska</h2>
+  <h2 id="form-title">Потврда доласка</h2>
+  
   <form id="rsvp-form" class="rsvp-form">
     <fieldset>
-      <legend>Vaši podaci</legend>
+      <legend>Ваши подаци</legend>
       <div class="input-group">
-        <label for="firstName">Ime</label>
-        <input type="text" id="firstName" name="firstName" required placeholder="Unesite vaše ime" />
+        <label for="firstName">Име</label>
+        <input type="text" id="firstName" name="firstName" required placeholder="Унесите ваше име" />
       </div>
       <div class="input-group">
-        <label for="lastName">Prezime</label>
-        <input type="text" id="lastName" name="lastName" required placeholder="Unesite vaše prezime" />
+        <label for="lastName">Презиме</label>
+        <input type="text" id="lastName" name="lastName" required placeholder="Унесите ваше презиме" />
       </div>
     </fieldset>
 
     <fieldset>
-      <legend>Osobe koje dolaze sa vama</legend>
+      <legend>Особе које долазе са вама</legend>
       <div id="guests-container"></div>
       <button type="button" id="add-guest-btn" class="secondary-btn">
-        + Dodaj osobu
+        + Додај особу
       </button>
     </fieldset>
 
-    <button type="submit" id="submit-btn" class="primary-btn">Potvrdi dolazak</button>
-    <p id="form-message" style="display: none; text-align: center; margin-top: 1rem;"></p>
+    <button type="submit" id="submit-btn" class="primary-btn">Потврди долазак</button>
   </form>
+
+  <!-- Порука која се приказује након успешног слања -->
+  <div id="success-message" class="success-message" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" class="success-icon" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+    </svg>
+    <h3>Хвала Вам што сте потврдили свој долазак, радујемо се скором виђењу.</h3>
+  </div>
 </div>
 
 <script>
@@ -35,26 +43,27 @@
   const guestsContainer = document.getElementById('guests-container');
   const rsvpForm = document.getElementById('rsvp-form');
   const submitBtn = document.getElementById('submit-btn');
-  const formMessage = document.getElementById('form-message');
+  const formTitle = document.getElementById('form-title');
+  const successMessage = document.getElementById('success-message');
 
   let guestCount = 0;
 
-  // 1. Logika za dodavanje LEPŠIH polja
+  // Динамичко додавање поља на ћирилици
   addGuestBtn?.addEventListener('click', () => {
     guestCount++;
     
     const guestDiv = document.createElement('div');
-    guestDiv.className = 'guest-row'; // Ovu klasu sada stilizujemo globalno
+    guestDiv.className = 'guest-row';
     guestDiv.innerHTML = `
       <div class="guest-input-group">
-        <label>Ime pratioca ${guestCount}</label>
-        <input type="text" name="guestFirstName[]" placeholder="Unesite ime" required class="guest-input" />
+        <label>Име пратиоца ${guestCount}</label>
+        <input type="text" name="guestFirstName[]" placeholder="Унесите име" required class="guest-input" />
       </div>
       <div class="guest-input-group">
-        <label>Prezime pratioca ${guestCount}</label>
-        <input type="text" name="guestLastName[]" placeholder="Unesite prezime" required class="guest-input" />
+        <label>Презиме пратиоца ${guestCount}</label>
+        <input type="text" name="guestLastName[]" placeholder="Унесите презиме" required class="guest-input" />
       </div>
-      <button type="button" class="remove-btn" title="Ukloni osobu">✖</button>
+      <button type="button" class="remove-btn" title="Уклони особу">✖</button>
     `;
 
     guestDiv.querySelector('.remove-btn')?.addEventListener('click', () => {
@@ -64,11 +73,11 @@
     guestsContainer?.appendChild(guestDiv);
   });
 
-  // 2. Logika za slanje u Google Sheets
+  // Слање форме
   rsvpForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    if(submitBtn) submitBtn.textContent = 'Šaljem...';
+    if(submitBtn) submitBtn.textContent = 'Шаљем...';
     
     const formData = new FormData(rsvpForm as HTMLFormElement);
     const guestFirstNames = formData.getAll('guestFirstName[]');
@@ -79,40 +88,35 @@
       pratioci.push(`${guestFirstNames[i]} ${guestLastNames[i]}`);
     }
 
-    // Podaci koje šaljemo Skripti
     const data = {
       ime: formData.get('firstName'),
       prezime: formData.get('lastName'),
-      pratioci: pratioci.join(', ') // Spajamo pratioce u jedan tekst zarezom
+      pratioci: pratioci.join(', ')
     };
 
     try {
-      // OVDE UBACUJEŠ SVOJ GOOGLE WEB APP URL (iz Koraka 2 ispod)
+      // ЗАМЕНИ ОВО ТВОЈИМ GOOGLE APPS SCRIPT ЛИНКОМ
       const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8izZ0PWNXTl0RREHobK6P3b6NdixRGAnj9dpaTmzQfMtKSY6oZH8AIRiTDKhxemAG/exec'; 
 
       await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        // Šaljemo kao text/plain da bismo izbegli CORS greške iz browsera
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(data)
       });
 
-      // Prikaz uspeha
+      // Приказ лепе поруке захвалности и скривање форме
       rsvpForm.style.display = 'none';
-      if(formMessage) {
-        formMessage.style.display = 'block';
-        formMessage.style.color = 'green';
-        formMessage.textContent = 'Hvala! Vaš dolazak je uspešno potvrđen.';
-      }
+      if(formTitle) formTitle.style.display = 'none';
+      if(successMessage) successMessage.style.display = 'flex';
+
     } catch (error) {
-      alert('Došlo je do greške prilikom slanja. Pokušajte ponovo.');
-      if(submitBtn) submitBtn.textContent = 'Potvrdi dolazak';
+      alert('Дошло је до грешке приликом слања. Покушајте поново.');
+      if(submitBtn) submitBtn.textContent = 'Потврди долазак';
     }
   });
 </script>
 
 <style>
-  /* Lokalni stilovi za fiksne elemente */
   .rsvp-wrapper {
     max-width: 500px;
     margin: 0 auto;
@@ -133,14 +137,41 @@
   .primary-btn:hover { background-color: #1d4ed8; }
   .secondary-btn { padding: 0.5rem 1rem; background-color: #e5e7eb; color: #374151; }
   .secondary-btn:hover { background-color: #d1d5db; }
+
+  /* Стилови за поруку захвалности */
+  .success-message {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 0;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  .success-message h3 {
+    color: #1f2937;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    font-weight: 500;
+  }
+  .success-icon {
+    width: 60px;
+    height: 60px;
+    color: #16a34a; /* Зелена боја за успех */
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 </style>
 
 <style is:global>
-  /* GLOBALNI stilovi za elemente koje ubacujemo preko JavaScripta (Gosti) */
+  /* ГЛОБАЛНИ стилови за елементе које убацујемо преко JavaScript-а */
   .guest-row {
     display: flex;
     gap: 1rem;
-    align-items: flex-end; /* Poravnava dugme sa dnom inputa */
+    align-items: flex-end; 
     margin-bottom: 1rem;
     background: #ffffff;
     padding: 1rem;
@@ -152,7 +183,7 @@
   .guest-input-group {
     display: flex;
     flex-direction: column;
-    flex: 1; /* Da polja zauzmu jednaku širinu */
+    flex: 1; 
   }
 
   .guest-input-group label {
@@ -178,7 +209,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 42px; /* Da bude iste visine kao input polje */
+    height: 42px; 
   }
 
   .remove-btn:hover {
