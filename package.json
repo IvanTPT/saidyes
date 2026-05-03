@@ -5,10 +5,13 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "bun run build && wrangler dev",
+    "astro": "astro",
+    "deploy": "bun run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "12",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource/playfair-display": "^5.2.8",
     "@tailwindcss/vite": "^4.1.18",
@@ -17,5 +20,8 @@
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18",
     "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.87.0"
   }
 }
