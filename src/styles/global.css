@@ -1,7 +1,7 @@
 @import "@fontsource-variable/inter/index.css";
 @import "@fontsource/playfair-display/latin.css";
 /* Увоз Great Vibes фонта са Google Fonts за наслове */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -10,8 +10,8 @@
         "Segoe UI", sans-serif;
     /* Чувамо Playfair Display ако ти затреба за друге елементе */
     --font-serif: "Playfair Display", serif; 
-    /* Постављамо Great Vibes за наслове */
-    --font-display: "Great Vibes", cursive; 
+    /* Постављамо Marck за наслове */
+    --font-display: "Marck Script", cursive; 
     --section-padding: clamp(2rem, 7vw, 6rem);
     --section-max-width: 1000px;
     --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.08);
